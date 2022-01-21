@@ -17,20 +17,28 @@ fn main() {
         (windows_size.0 / 2) as i32,
         (windows_size.1 - remu_size.y as u32) as i32,
     ));
-
+    // Textures
     let remu_texture: SfBox<Texture> = Texture::from_file(concat!(
         env!("CARGO_MANIFEST_DIR"),
         "/src/resources/",
         "remu.png"
-    ))
-    .unwrap();
-    let mut remu = Remu::new(windows_size);
-    let mut bullets_vec: LinkedList<Bullet> = LinkedList::new();
-    let mut put_bullet = false;
+    )).unwrap();
 
+    let remu_bullets_texture: SfBox<Texture> = Texture::from_file(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/src/resources/",
+        "bullet.png"
+    )).unwrap();
+    
+    // Clocks and Timers
     let mut clock = Clock::start();
     let mut bc = Clock::start();
     let mut bullet_time = Time::default();
+    
+    // Init
+    let mut remu = Remu::new(windows_size);
+    let mut bullets_vec: LinkedList<Bullet> = LinkedList::new();
+    let mut put_bullet = false;
 
     while window.is_open() {
         bullet_time = bc.elapsed_time();
@@ -48,11 +56,13 @@ fn main() {
                 _ => {}
             }
         }
-        if put_bullet && bullet_time.as_seconds() >= 0.05 {
-            bullets_vec.push_back(Bullet::new(Vector2f::new(
+        if put_bullet && bullet_time.as_seconds() >= 0.02 {
+            let mut bb = Bullet::new(Vector2f::new(
                 window.mouse_position().x as f32,
                 window.mouse_position().y as f32,
-            )));
+            ));
+            bb.body.set_texture(&remu_bullets_texture, false);
+            bullets_vec.push_back(bb);
             bc.restart();
         }
         remu.bbody.set_texture(&remu_texture, false);
@@ -129,7 +139,6 @@ struct Bullet<'a> {
 impl Bullet<'static> {
     fn new(pos: Vector2f) -> Bullet<'static> {
         let mut body = CircleShape::new(10.0, 30);
-        body.set_fill_color(Color::BLUE);
         body.set_position(pos);
         Bullet {
             damage: 1,
