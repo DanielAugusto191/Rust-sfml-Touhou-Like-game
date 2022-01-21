@@ -44,10 +44,10 @@ fn main() {
                         window.set_mouse_position(Vector2i::new(400, 300));
                     } else if code == Key::D {
                         let dm = VideoMode::desktop_mode();
-                        let center = Vector2i::new(dm.width as i32 / 2, dm.height as i32 / 2);
-                        mouse::set_desktop_position(center);
+                        let cente:set_desktop_position(center);
                     } else if code == Key::V {
-                        cursor_visible = !cursor_visible;
+                        cursorr = Vector2i::new(dm.width as i32 / 2, dm.height as i32 / 2);
+                        mouse:_visible = !cursor_visible;
                         window.set_mouse_cursor_visible(cursor_visible);
                     } else if code == Key::G {
                         grabbed = !grabbed;
