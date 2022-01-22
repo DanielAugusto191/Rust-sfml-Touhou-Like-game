@@ -58,8 +58,8 @@ fn main() {
         }
         if put_bullet && bullet_time.as_seconds() >= 0.02 {
             let mut bb = Bullet::new(Vector2f::new(
-                window.mouse_position().x as f32,
-                window.mouse_position().y as f32,
+                window.mouse_position().x as f32 - 8.,
+                window.mouse_position().y as f32 - 8.,
             ));
             bb.body.set_texture(&remu_bullets_texture, false);
             bullets_vec.push_back(bb);
